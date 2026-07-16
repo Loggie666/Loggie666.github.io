@@ -279,3 +279,40 @@ color:#8b949e;
 
 
 }
+.talent-map-image{
+
+margin-top:30px;
+
+background:#0d1117;
+
+padding:20px;
+
+border-radius:16px;
+
+border:1px solid #30363d;
+
+}
+
+
+.talent-map-image img{
+
+width:100%;
+
+height:auto;
+
+display:block;
+
+border-radius:12px;
+
+}
+
+
+.section-desc{
+
+color:#8b949e;
+
+font-size:16px;
+
+margin-bottom:25px;
+
+}
