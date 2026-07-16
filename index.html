@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loggie (Winny) - AI领域资深技术招聘顾问</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+        }
+        h1 { font-size: 28px; margin-bottom: 8px; }
+        .title {
+            font-size: 18px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .bio {
+            color: #555;
+            max-width: 500px;
+            margin: 0 auto 20px;
+            text-align: left;
+            line-height: 1.8;
+        }
+        .contact-links a {
+            display: inline-block;
+            margin: 0 12px;
+            color: #667eea;
+            font-size: 24px;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .contact-links a:hover { transform: translateY(-3px); }
+        .section-title {
+            font-size: 24px;
+            margin: 30px 0 20px;
+            padding-left: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .job-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .job-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            transition: box-shadow 0.3s;
+            border: 1px solid #f0f0f0;
+        }
+        .job-card:hover {
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+        .job-card h3 { font-size: 18px; margin-bottom: 8px; }
+        .job-card .tag {
+            display: inline-block;
+            background: #eef2ff;
+            color: #667eea;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+        .job-card .location {
+            color: #888;
+            font-size: 14px;
+            margin-top: 12px;
+        }
+        .more-jobs {
+            text-align: center;
+            margin-top: 25px;
+            color: #667eea;
+            font-weight: 600;
+        }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 25px;
+            color: #aaa;
+            font-size: 14px;
+        }
+        @media (max-width: 600px) {
+            .profile-card { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- 个人介绍卡片 -->
+        <div class="profile-card">
+            <div class="avatar">
+                <!-- 卡通图标（后期可替换成你自己的照片） -->
+                <i class="fas fa-user-astronaut"></i>
+            </div>
+            <h1>Loggie (Winny)</h1>
+            <div class="title">AI领域资深技术招聘顾问</div>
+            <p class="bio">
+                从业7年，回款百万。19-23年专注云计算与大数据，23年至今聚焦大模型技术招聘（预训练/后训练算法/AI infra等），协助头部基模团队完成早期团队搭建。<br>
+                我擅长将人才在当前团队无法发挥的优势，更好地传递给客户，从而达成共赢。<br>
+                期待与你交流学习～
+            </p>
+            <div class="contact-links">
+                <a href="mailto:loggie1123@outlook.com" title="邮箱"><i class="fas fa-envelope"></i></a>
+                <a href="#" title="微信: Winnyontheroad（备注来意）"><i class="fab fa-weixin"></i></a>
+                <a href="https://www.linkedin.com/in/loggie-ann-230b6521b/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+
+        <!-- 热招职位 -->
+        <h2 class="section-title">🔥 热招职位</h2>
+        <div class="job-grid">
+            <div class="job-card">
+                <h3>多模态算法</h3>
+                <span class="tag">预训练</span><span class="tag">后训练</span>
+                <div class="location">📍 北京 / 上海 / 杭州 / 深圳</div>
+            </div>
+            <div class="job-card">
+                <h3>AI Infra</h3>
+                <span class="tag">训推框架</span><span class="tag">异构计算</span><span class="tag">资源调度</span>
+                <div class="location">📍 北京 / 上海 / 杭州 / 深圳</div>
+            </div>
+            <div class="job-card">
+                <h3>大模型RL Infra</h3>
+                <span class="tag">RLHF</span><span class="tag">强化学习</span>
+                <div class="location">📍 北京 / 上海 / 杭州 / 深圳</div>
+            </div>
+            <div class="job-card">
+                <h3>Agent Infra</h3>
+                <span class="tag">Agent框架</span><span class="tag">工具调用</span>
+                <div class="location">📍 北京 / 上海 / 杭州 / 深圳</div>
+            </div>
+        </div>
+        <div class="more-jobs">
+            👉 查看全部岗位（链接待添加）
+        </div>
+
+    </div>
+    <footer>
+        © 2025 Winny · 期待与你共事
+    </footer>
+</body>
+</html>
