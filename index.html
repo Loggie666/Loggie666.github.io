@@ -1,337 +1,524 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Loggie AI Talent Research Studio</title>
+<style>
+  /* ===== 基础重置 & 变量 ===== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.08);
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --primary: #6366f1;
+    --accent: #a855f7;
+    --gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  }
 
-<link rel="stylesheet" href="style.css">
+  html { scroll-behavior: smooth; }
 
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ===== 背景光晕 ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: -10%;
+    width: 50%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -20%;
+    right: -10%;
+    width: 50%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(168,85,247,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ===== 导航栏 ===== */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    transition: all 0.3s ease;
+  }
+  nav.scrolled {
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-weight: 700;
+    font-size: 1.1rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ===== Hero 区域 ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 40px rgba(99,102,241,0.4);
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h2 {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+  }
+
+  .hero > p {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .buttons a {
+    padding: 0.875rem 2rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+  }
+
+  .buttons a:first-child {
+    background: var(--gradient);
+    color: white;
+    box-shadow: 0 4px 20px rgba(99,102,241,0.3);
+  }
+  .buttons a:first-child:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(99,102,241,0.5);
+  }
+
+  .buttons a:last-child {
+    border: 1px solid var(--border);
+    color: var(--text);
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+  }
+  .buttons a:last-child:hover {
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+  }
+
+  /* ===== 通用 Section ===== */
+  section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  section h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .section-desc {
+    text-align: center;
+    color: var(--text-dim);
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    font-size: 1.05rem;
+  }
+
+  /* ===== Research Focus 卡片 ===== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(99,102,241,0.3);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 20px rgba(99,102,241,0.1);
+  }
+
+  .card h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card p {
+    color: var(--text-dim);
+    line-height: 2;
+    font-size: 0.95rem;
+  }
+
+  /* ===== 地图区域 ===== */
+  .talent-map-image {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    padding: 1rem;
+    transition: all 0.4s ease;
+  }
+  .talent-map-image:hover {
+    border-color: rgba(168,85,247,0.3);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  }
+  .talent-map-image img {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+  }
+
+  /* ===== 机会列表 ===== */
+  ul {
+    list-style: none;
+    max-width: 600px;
+    margin: 1.5rem auto;
+  }
+  ul li {
+    padding: 0.75rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+  }
+  ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+  }
+  ul li:last-child { border-bottom: none; }
+
+  .jd {
+    text-align: center;
+    padding: 2rem;
+    background: var(--bg-card);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    color: var(--text-dim);
+    margin-top: 2rem;
+    font-style: italic;
+  }
+
+  /* ===== About 时间线 ===== */
+  .about-content {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .about-content p {
+    color: var(--text-dim);
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin: 1.5rem 0;
+  }
+  .tag {
+    padding: 0.35rem 0.9rem;
+    background: rgba(99,102,241,0.1);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+
+  /* ===== Contact ===== */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 2rem auto 0;
+  }
+  .contact-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  .contact-item:hover {
+    border-color: rgba(99,102,241,0.3);
+    transform: translateY(-4px);
+  }
+  .contact-item a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .contact-item a:hover { text-decoration: underline; }
+
+  /* ===== Footer ===== */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== 滚动动画 ===== */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero h1 { font-size: 2rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
-
 
 <body>
 
+<!-- 导航栏 -->
+<nav id="navbar">
+  <div class="nav-logo">Loggie</div>
+  <ul class="nav-links">
+    <li><a href="#focus">Research</a></li>
+    <li><a href="#map">Map</a></li>
+    <li><a href="#opportunities">Opportunities</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
+<!-- Hero -->
 <header class="hero">
-
-
-<div class="avatar">
-L
-</div>
-
-
-<h1>
-LOGGIE AI TALENT RESEARCH STUDIO
-</h1>
-
-
-<h2>
-Mapping the builders behind the next generation of AI systems.
-</h2>
-
-
-<p>
-研究 AI 时代最核心技术人才，
-连接模型、基础设施与未来组织。
-</p>
-
-
-<div class="buttons">
-
-<a href="#focus">
-Research Focus
-</a>
-
-
-<a href="mailto:loggie1123@outlook.com">
-Contact
-</a>
-
-
-</div>
-
-
+  <div class="avatar">L</div>
+  <h1>Loggie AI Talent Research Studio</h1>
+  <h2>Mapping the builders behind the next generation of AI systems.</h2>
+  <p>研究 AI 时代最核心技术人才，连接模型、基础设施与未来组织。</p>
+  <div class="buttons">
+    <a href="#focus">Research Focus</a>
+    <a href="mailto:loggie1123@outlook.com">Contact</a>
+  </div>
 </header>
 
-
-
-
-<section id="focus">
-
-
-<h3>
-Research Focus
-</h3>
-
-
-<div class="grid">
-
-
-<div class="card">
-
-<h4>
-Foundation Model Talent
-</h4>
-
-<p>
-Pre-training<br>
-Post-training<br>
-Multimodal<br>
-RLHF / RLAIF
-</p>
-
-
-</div>
-
-
-
-<div class="card">
-
-<h4>
-AI Infrastructure
-</h4>
-
-
-<p>
-Training System<br>
-Inference Engine<br>
-GPU Scheduling<br>
-Distributed Computing
-</p>
-
-
-</div>
-
-
-
-
-<div class="card">
-
-<h4>
-Agentic System
-</h4>
-
-
-<p>
-Agent Runtime<br>
-Memory System<br>
-Tool Infrastructure<br>
-RL Infra
-</p>
-
-
-</div>
-
-
-</div>
-
-
+<!-- Research Focus -->
+<section id="focus" class="fade-in">
+  <h3>Research Focus</h3>
+  <p class="section-desc">深耕 AI 核心技术人才研究，覆盖从模型到基础设施的全栈领域</p>
+  <div class="grid">
+    <div class="card">
+      <h4>Foundation Model Talent</h4>
+      <p>Pre-training<br>Post-training<br>Multimodal<br>RLHF / RLAIF</p>
+    </div>
+    <div class="card">
+      <h4>AI Infrastructure</h4>
+      <p>Training System<br>Inference Engine<br>GPU Scheduling<br>Distributed Computing</p>
+    </div>
+    <div class="card">
+      <h4>Agentic System</h4>
+      <p>Agent Runtime<br>Memory System<br>Tool Infrastructure<br>RL Infra</p>
+    </div>
+  </div>
 </section>
 
-
-
-
-
-<section>
-
-<h3>
-AI Talent Ecosystem Map 2026
-</h3>
-
-
-<p class="section-desc">
-
-Mapping the builders behind AI systems.
-
-从模型能力到基础设施，
-探索 AI 时代核心技术人才分布、
-能力迁移与价值创造。
-
-</p>
-
-
-<div class="talent-map-image">
-
-<img 
-src="ai-talent-map.png"
-alt="AI Talent Ecosystem Map">
-
-</div>
-
-
+<!-- Map -->
+<section id="map" class="fade-in">
+  <h3>AI Talent Ecosystem Map 2026</h3>
+  <p class="section-desc">
+    Mapping the builders behind AI systems.<br>
+    从模型能力到基础设施，探索 AI 时代核心技术人才分布、能力迁移与价值创造。
+  </p>
+  <div class="talent-map-image">
+    <img src="ai-talent-map.png" alt="AI Talent Ecosystem Map">
+  </div>
 </section>
 
-
-
-
-
-<section>
-
-
-<h3>
-Current Opportunities
-</h3>
-
-
-<p>
-
-Currently collaborating with AI companies on:
-
-
-</p>
-
-
-<ul>
-
-<li>
-多模态算法 - 预训练 / 后训练
-</li>
-
-
-<li>
-AI Infra - 训推框架 / 异构计算 / GPU资源调度
-</li>
-
-
-<li>
-大模型 RL Infra
-</li>
-
-
-<li>
-Agent Infra
-</li>
-
-
-</ul>
-
-
-<p>
-Base:
-北京 / 上海 / 杭州 / 深圳
-</p>
-
-
-
-<div class="jd">
-
-JD List Coming Soon...
-
-</div>
-
-
+<!-- Opportunities -->
+<section id="opportunities" class="fade-in">
+  <h3>Current Opportunities</h3>
+  <p class="section-desc">Currently collaborating with AI companies on:</p>
+  <ul>
+    <li>多模态算法 - 预训练 / 后训练</li>
+    <li>AI Infra - 训推框架 / 异构计算 / GPU资源调度</li>
+    <li>大模型 RL Infra</li>
+    <li>Agent Infra</li>
+  </ul>
+  <p style="text-align:center; color: var(--text-dim); margin-top:1.5rem;">
+    Base: 北京 / 上海 / 杭州 / 深圳
+  </p>
+  <div class="jd">JD List Coming Soon...</div>
 </section>
 
-
-
-
-
-<section>
-
-
-<h3>
-About Loggie
-</h3>
-
-
-<p>
-
-AI技术招聘顾问。
-
-
-从业7年。
-
-2019-2023 聚焦云计算、大数据领域。
-
-
-2023年至今专注大模型技术招聘：
-
-包括：
-
-预训练算法、
-后训练算法、
-多模态、
-AI Infra、
-RL Infra、
-Agent Infra。
-
-
-</p>
-
-
-<p>
-
-我的工作不是简单匹配简历，
-而是理解人才真正的技术价值，
-帮助人才和组织找到更长期的匹配。
-
-</p>
-
-
-
+<!-- About -->
+<section id="about" class="fade-in">
+  <h3>About Loggie</h3>
+  <div class="about-content">
+    <p>AI 技术招聘顾问，从业 7 年。</p>
+    <p>2019-2023 聚焦云计算、大数据领域。2023 年至今专注大模型技术招聘。</p>
+    <div class="tags">
+      <span class="tag">预训练算法</span>
+      <span class="tag">后训练算法</span>
+      <span class="tag">多模态</span>
+      <span class="tag">AI Infra</span>
+      <span class="tag">RL Infra</span>
+      <span class="tag">Agent Infra</span>
+    </div>
+    <p>我的工作不是简单匹配简历，而是理解人才真正的技术价值，帮助人才和组织找到更长期的匹配。</p>
+  </div>
 </section>
 
-
-
-
-
-<section>
-
-
-<h3>
-Contact
-</h3>
-
-
-<p>
-
-Email:
-<a href="mailto:loggie1123@outlook.com">
-loggie1123@outlook.com
-</a>
-
-</p>
-
-
-<p>
-
-Wechat:
-Winnyontheroad
-（备注来意）
-
-</p>
-
-
-
-<p>
-
-LinkedIn:
-
-<a href="https://www.linkedin.com/in/loggie-ann-230b6521b/">
-
-Loggie Ann
-
-</a>
-
-</p>
-
-
+<!-- Contact -->
+<section id="contact" class="fade-in">
+  <h3>Contact</h3>
+  <div class="contact-grid">
+    <div class="contact-item">
+      <p style="color:var(--text-dim); font-size:0.9rem; margin-bottom:0.5rem;">Email</p>
+      <a href="mailto:loggie1123@outlook.com">loggie1123@outlook.com</a>
+    </div>
+    <div class="contact-item">
+      <p style="color:var(--text-dim); font-size:0.9rem; margin-bottom:0.5rem;">WeChat</p>
+      <span>Winnyontheroad<br><small style="color:var(--text-dim)">（备注来意）</small></span>
+    </div>
+    <div class="contact-item">
+      <p style="color:var(--text-dim); font-size:0.9rem; margin-bottom:0.5rem;">LinkedIn</p>
+      <a href="https://www.linkedin.com/in/loggie-ann-230b6521b/">Loggie Ann</a>
+    </div>
+  </div>
 </section>
 
+<footer>© 2026 Loggie AI Talent Research Studio</footer>
 
+<script>
+  // 导航栏滚动效果
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
 
+  // 滚动渐入动画
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
 
-<footer>
-
-© 2026 Loggie AI Talent Research Studio
-
-</footer>
-
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
 
 </body>
-
-
 </html>
