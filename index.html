@@ -2,523 +2,402 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loggie AI Talent Research Studio</title>
-<style>
-  /* ===== 基础重置 & 变量 ===== */
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  :root {
-    --bg: #0a0a0f;
-    --bg-card: rgba(255, 255, 255, 0.03);
-    --border: rgba(255, 255, 255, 0.08);
-    --text: #e2e8f0;
-    --text-dim: #94a3b8;
-    --primary: #6366f1;
-    --accent: #a855f7;
-    --gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-  }
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loggie · AI 核心技术人才研究｜预训练 / 后训练 / AI Infra 招聘</title>
+<meta name="description" content="Loggie，7 年技术招聘，2023 年起专注大模型。覆盖预训练、后训练、多模态、AI Infra、RL Infra 与 Agent Infra 的人才研究与定向寻访。北京 · 上海 · 杭州 · 深圳。">
+<meta name="author" content="Loggie">
+<meta name="theme-color" content="#08080d">
+<link rel="canonical" href="https://loggie666.github.io/">
 
-  html { scroll-behavior: smooth; }
+<!-- 分享卡片 -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Loggie · AI Talent Research Studio">
+<meta property="og:title" content="Loggie · AI 核心技术人才研究与连接">
+<meta property="og:description" content="7 年技术招聘，专注大模型与 AI 基础设施。先看懂技术，再判断价值。">
+<meta property="og:url" content="https://loggie666.github.io/">
+<meta property="og:image" content="https://loggie666.github.io/assets/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Loggie · AI 核心技术人才研究与连接">
+<meta name="twitter:description" content="7 年技术招聘，专注大模型与 AI 基础设施。">
+<meta name="twitter:image" content="https://loggie666.github.io/assets/og-cover.jpg">
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23141422'/%3E%3Ctext x='32' y='45' font-family='Helvetica,Arial,sans-serif' font-size='36' font-weight='700' fill='%23a5a9fb' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="preload" href="assets/style.css" as="style">
+<link rel="stylesheet" href="assets/style.css">
 
-  /* ===== 背景光晕 ===== */
-  body::before {
-    content: '';
-    position: fixed;
-    top: -20%;
-    left: -10%;
-    width: 50%;
-    height: 60%;
-    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
-  body::after {
-    content: '';
-    position: fixed;
-    bottom: -20%;
-    right: -10%;
-    width: 50%;
-    height: 60%;
-    background: radial-gradient(circle, rgba(168,85,247,0.12) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Loggie",
+  "jobTitle": "技术招聘顾问 / AI Talent Researcher",
+  "description": "专注大模型与 AI 基础设施领域的技术人才研究与定向寻访。",
+  "url": "https://loggie666.github.io/",
+  "image": "https://loggie666.github.io/assets/og-cover.jpg",
+  "email": "mailto:loggie1123@outlook.com",
+  "homeLocation": { "@type": "Place", "name": "北京" },
+  "knowsAbout": ["预训练", "后训练", "多模态", "AI Infra", "RL Infra", "Agent Infra", "技术人才寻访"],
+  "sameAs": ["https://www.linkedin.com/in/loggie-ann-230b6521b/"]
+}
+</script>
 
-  /* ===== 导航栏 ===== */
-  nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    padding: 1rem 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 100;
-    transition: all 0.3s ease;
-  }
-  nav.scrolled {
-    background: rgba(10, 10, 15, 0.8);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-logo {
-    font-weight: 700;
-    font-size: 1.1rem;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .nav-links {
-    display: flex;
-    gap: 2rem;
-    list-style: none;
-  }
-  .nav-links a {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.3s;
-  }
-  .nav-links a:hover { color: var(--text); }
-
-  /* ===== Hero 区域 ===== */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 2rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  .avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: var(--gradient);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 2rem;
-    box-shadow: 0 0 40px rgba(99,102,241,0.4);
-    animation: float 6s ease-in-out infinite;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  .hero h1 {
-    font-size: clamp(1.8rem, 5vw, 3.5rem);
-    font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.02em;
-  }
-
-  .hero h2 {
-    font-size: clamp(1rem, 2.5vw, 1.5rem);
-    color: var(--text-dim);
-    font-weight: 400;
-    margin-bottom: 1.5rem;
-    max-width: 600px;
-  }
-
-  .hero > p {
-    font-size: 1.1rem;
-    color: var(--text-dim);
-    margin-bottom: 2.5rem;
-    max-width: 500px;
-  }
-
-  .buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .buttons a {
-    padding: 0.875rem 2rem;
-    border-radius: 9999px;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-  }
-
-  .buttons a:first-child {
-    background: var(--gradient);
-    color: white;
-    box-shadow: 0 4px 20px rgba(99,102,241,0.3);
-  }
-  .buttons a:first-child:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(99,102,241,0.5);
-  }
-
-  .buttons a:last-child {
-    border: 1px solid var(--border);
-    color: var(--text);
-    background: var(--bg-card);
-    backdrop-filter: blur(10px);
-  }
-  .buttons a:last-child:hover {
-    border-color: rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.05);
-  }
-
-  /* ===== 通用 Section ===== */
-  section {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 6rem 2rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  section h3 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-
-  .section-desc {
-    text-align: center;
-    color: var(--text-dim);
-    max-width: 600px;
-    margin: 0 auto 3rem;
-    font-size: 1.05rem;
-  }
-
-  /* ===== Research Focus 卡片 ===== */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2rem;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
-  }
-
-  .card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(99,102,241,0.3);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 20px rgba(99,102,241,0.1);
-  }
-
-  .card h4 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .card p {
-    color: var(--text-dim);
-    line-height: 2;
-    font-size: 0.95rem;
-  }
-
-  /* ===== 地图区域 ===== */
-  .talent-map-image {
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    padding: 1rem;
-    transition: all 0.4s ease;
-  }
-  .talent-map-image:hover {
-    border-color: rgba(168,85,247,0.3);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  }
-  .talent-map-image img {
-    width: 100%;
-    border-radius: 8px;
-    display: block;
-  }
-
-  /* ===== 机会列表 ===== */
-  ul {
-    list-style: none;
-    max-width: 600px;
-    margin: 1.5rem auto;
-  }
-  ul li {
-    padding: 0.75rem 0;
-    padding-left: 1.5rem;
-    position: relative;
-    color: var(--text-dim);
-    border-bottom: 1px solid var(--border);
-  }
-  ul li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: var(--primary);
-  }
-  ul li:last-child { border-bottom: none; }
-
-  .jd {
-    text-align: center;
-    padding: 2rem;
-    background: var(--bg-card);
-    border: 1px dashed var(--border);
-    border-radius: 12px;
-    color: var(--text-dim);
-    margin-top: 2rem;
-    font-style: italic;
-  }
-
-  /* ===== About 时间线 ===== */
-  .about-content {
-    max-width: 700px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  .about-content p {
-    color: var(--text-dim);
-    margin-bottom: 1.5rem;
-    font-size: 1.05rem;
-  }
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
-    margin: 1.5rem 0;
-  }
-  .tag {
-    padding: 0.35rem 0.9rem;
-    background: rgba(99,102,241,0.1);
-    border: 1px solid rgba(99,102,241,0.2);
-    border-radius: 9999px;
-    font-size: 0.85rem;
-    color: var(--text);
-  }
-
-  /* ===== Contact ===== */
-  .contact-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    max-width: 800px;
-    margin: 2rem auto 0;
-  }
-  .contact-item {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.5rem;
-    text-align: center;
-    transition: all 0.3s ease;
-  }
-  .contact-item:hover {
-    border-color: rgba(99,102,241,0.3);
-    transform: translateY(-4px);
-  }
-  .contact-item a {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 500;
-  }
-  .contact-item a:hover { text-decoration: underline; }
-
-  /* ===== Footer ===== */
-  footer {
-    text-align: center;
-    padding: 3rem 2rem;
-    color: var(--text-dim);
-    font-size: 0.9rem;
-    border-top: 1px solid var(--border);
-    position: relative;
-    z-index: 1;
-  }
-
-  /* ===== 滚动动画 ===== */
-  .fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ===== 响应式 ===== */
-  @media (max-width: 768px) {
-    .nav-links { display: none; }
-    section { padding: 4rem 1.5rem; }
-    .hero h1 { font-size: 2rem; }
-    .grid { grid-template-columns: 1fr; }
-  }
-</style>
+<!-- 没有 JS 时不要让渐入动画藏住内容；app.js 加载失败也会在 3 秒后强制显示 -->
+<script>
+  document.documentElement.classList.add('js');
+  setTimeout(function () {
+    if (window.__APP_READY) return;
+    var els = document.querySelectorAll('.reveal');
+    for (var i = 0; i < els.length; i++) els[i].classList.add('in');
+  }, 3000);
+</script>
+<noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
 </head>
 
 <body>
+<a class="skip" href="#main">跳到主要内容</a>
 
-<!-- 导航栏 -->
-<nav id="navbar">
-  <div class="nav-logo">Loggie</div>
-  <ul class="nav-links">
-    <li><a href="#focus">Research</a></li>
-    <li><a href="#map">Map</a></li>
-    <li><a href="#opportunities">Opportunities</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
-
-<!-- Hero -->
-<header class="hero">
-  <div class="avatar">L</div>
-  <h1>Loggie AI Talent Research Studio</h1>
-  <h2>Mapping the builders behind the next generation of AI systems.</h2>
-  <p>研究 AI 时代最核心技术人才，连接模型、基础设施与未来组织。</p>
-  <div class="buttons">
-    <a href="#focus">Research Focus</a>
-    <a href="mailto:loggie1123@outlook.com">Contact</a>
+<!-- ============ 导航 ============ -->
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><i></i>Loggie</a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#focus">研究</a>
+      <a href="#map">图谱</a>
+      <a href="#talent">合作</a>
+      <a href="#roles">在招</a>
+      <a href="#about">关于</a>
+    </nav>
+    <a class="nav-cta" href="#contact">联系我</a>
+    <button class="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-panel">
+      <span></span>
+    </button>
   </div>
 </header>
+<nav class="nav-panel" id="nav-panel" aria-label="移动端导航">
+  <a href="#focus">研究范围</a>
+  <a href="#map">人才生态图谱</a>
+  <a href="#talent">给候选人</a>
+  <a href="#company">给企业</a>
+  <a href="#roles">在招方向</a>
+  <a href="#about">关于我</a>
+  <a href="#contact">联系方式 →</a>
+</nav>
 
-<!-- Research Focus -->
-<section id="focus" class="fade-in">
-  <h3>Research Focus</h3>
-  <p class="section-desc">深耕 AI 核心技术人才研究，覆盖从模型到基础设施的全栈领域</p>
-  <div class="grid">
-    <div class="card">
-      <h4>Foundation Model Talent</h4>
-      <p>Pre-training<br>Post-training<br>Multimodal<br>RLHF / RLAIF</p>
-    </div>
-    <div class="card">
-      <h4>AI Infrastructure</h4>
-      <p>Training System<br>Inference Engine<br>GPU Scheduling<br>Distributed Computing</p>
-    </div>
-    <div class="card">
-      <h4>Agentic System</h4>
-      <p>Agent Runtime<br>Memory System<br>Tool Infrastructure<br>RL Infra</p>
-    </div>
-  </div>
-</section>
+<main id="main">
+<span id="top"></span>
 
-<!-- Map -->
-<section id="map" class="fade-in">
-  <h3>AI Talent Ecosystem Map 2026</h3>
-  <p class="section-desc">
-    Mapping the builders behind AI systems.<br>
-    从模型能力到基础设施，探索 AI 时代核心技术人才分布、能力迁移与价值创造。
-  </p>
-  <div class="talent-map-image">
-    <img src="ai-talent-map.png" alt="AI Talent Ecosystem Map">
-  </div>
-</section>
-
-<!-- Opportunities -->
-<section id="opportunities" class="fade-in">
-  <h3>Current Opportunities</h3>
-  <p class="section-desc">Currently collaborating with AI companies on:</p>
-  <ul>
-    <li>多模态算法 - 预训练 / 后训练</li>
-    <li>AI Infra - 训推框架 / 异构计算 / GPU资源调度</li>
-    <li>大模型 RL Infra</li>
-    <li>Agent Infra</li>
-  </ul>
-  <p style="text-align:center; color: var(--text-dim); margin-top:1.5rem;">
-    Base: 北京 / 上海 / 杭州 / 深圳
-  </p>
-  <div class="jd">JD List Coming Soon...</div>
-</section>
-
-<!-- About -->
-<section id="about" class="fade-in">
-  <h3>About Loggie</h3>
-  <div class="about-content">
-    <p>AI 技术招聘顾问，从业 7 年。</p>
-    <p>2019-2023 聚焦云计算、大数据领域。2023 年至今专注大模型技术招聘。</p>
-    <div class="tags">
-      <span class="tag">预训练算法</span>
-      <span class="tag">后训练算法</span>
-      <span class="tag">多模态</span>
-      <span class="tag">AI Infra</span>
-      <span class="tag">RL Infra</span>
-      <span class="tag">Agent Infra</span>
+<!-- ============ Hero ============ -->
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">AI Talent Research Studio · Since 2019</p>
+    <h1>研究 AI 核心技术人才<br>连接<em>对的人</em>与对的组织</h1>
+    <p class="hero-lead">
+      7 年技术招聘，2023 年起专注大模型。从预训练、后训练到 AI Infra、RL Infra 与 Agent Infra——
+      先看懂技术，再判断价值。
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#talent">
+        我在看机会
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="#company">
+        我在招人
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </div>
-    <p>我的工作不是简单匹配简历，而是理解人才真正的技术价值，帮助人才和组织找到更长期的匹配。</p>
-  </div>
-</section>
 
-<!-- Contact -->
-<section id="contact" class="fade-in">
-  <h3>Contact</h3>
-  <div class="contact-grid">
-    <div class="contact-item">
-      <p style="color:var(--text-dim); font-size:0.9rem; margin-bottom:0.5rem;">Email</p>
-      <a href="mailto:loggie1123@outlook.com">loggie1123@outlook.com</a>
-    </div>
-    <div class="contact-item">
-      <p style="color:var(--text-dim); font-size:0.9rem; margin-bottom:0.5rem;">WeChat</p>
-      <span>Winnyontheroad<br><small style="color:var(--text-dim)">（备注来意）</small></span>
-    </div>
-    <div class="contact-item">
-      <p style="color:var(--text-dim); font-size:0.9rem; margin-bottom:0.5rem;">LinkedIn</p>
-      <a href="https://www.linkedin.com/in/loggie-ann-230b6521b/">Loggie Ann</a>
+    <div class="stats">
+      <div class="stat"><b>7</b><span>年 技术招聘经验</span></div>
+      <div class="stat"><b>3</b><span>年 专注大模型与 AI Infra</span></div>
+      <div class="stat"><b>6</b><span>个 深度覆盖的技术方向</span></div>
+      <div class="stat"><b>4</b><span>城 北京 · 上海 · 杭州 · 深圳</span></div>
     </div>
   </div>
 </section>
 
-<footer>© 2026 Loggie AI Talent Research Studio</footer>
+<!-- ============ 01 研究范围 ============ -->
+<section class="sec" id="focus">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="idx">01</span>
+      <h2>研究范围</h2>
+      <span class="sec-en">Research Focus</span>
+    </div>
+    <p class="sec-lead reveal">三条主线，也是我判断一个人技术水位的三个坐标系。</p>
 
-<script>
-  // 导航栏滚动效果
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 50);
-  });
+    <div class="focus-grid reveal">
+      <article class="focus-card">
+        <p class="focus-kicker">Foundation Models</p>
+        <h3><i></i>基础模型</h3>
+        <ul>
+          <li>预训练 <small>PRE-TRAIN</small></li>
+          <li>后训练 <small>SFT · RLHF · RLAIF</small></li>
+          <li>多模态理解与生成 <small>MULTIMODAL</small></li>
+          <li>对齐与安全 <small>ALIGNMENT</small></li>
+        </ul>
+        <p class="focus-note">候选池小、评价口径不一，我靠论文、开源仓库和团队战绩交叉验证，而不是简历关键词。</p>
+      </article>
 
-  // 滚动渐入动画
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1 });
+      <article class="focus-card">
+        <p class="focus-kicker">Infrastructure</p>
+        <h3><i></i>AI 基础设施</h3>
+        <ul>
+          <li>训练框架与分布式 <small>TRAINING</small></li>
+          <li>推理引擎与长上下文 <small>INFERENCE</small></li>
+          <li>GPU 调度与算力池化 <small>SCHEDULING</small></li>
+          <li>RDMA / 存储与数据管道 <small>NETWORK</small></li>
+        </ul>
+        <p class="focus-note">真正的量产经验只在少数团队，所以要看系统论文、压测数据和故障复盘。</p>
+      </article>
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-</script>
+      <article class="focus-card">
+        <p class="focus-kicker">Agentic &amp; RL</p>
+        <h3><i></i>智能体与强化学习</h3>
+        <ul>
+          <li>Agent Runtime 与编排 <small>RUNTIME</small></li>
+          <li>记忆、检索与工具调用 <small>MEMORY</small></li>
+          <li>大规模 RL 训练系统 <small>RL INFRA</small></li>
+          <li>评测与长程任务 <small>EVAL</small></li>
+        </ul>
+        <p class="focus-note">方向变得快，要区分「做过 demo」和「在生产里跑过」。</p>
+      </article>
+    </div>
+  </div>
+</section>
 
+<!-- ============ 02 图谱 ============ -->
+<section class="sec" id="map">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="idx">02</span>
+      <h2>AI 人才生态图谱 · 2026</h2>
+      <span class="sec-en">The Map</span>
+    </div>
+    <p class="sec-lead reveal">
+      从应用层、模型层、基础设施层到智能体层，一张图看清人才分布、能力迁移与价值创造。
+    </p>
+
+    <div class="reveal">
+      <button class="map-frame" type="button" data-lightbox="assets/ai-talent-map.webp" aria-label="放大查看 AI 人才生态图谱">
+        <picture>
+          <source type="image/webp" srcset="assets/ai-talent-map-960.webp 960w, assets/ai-talent-map.webp 1306w" sizes="(max-width: 820px) 92vw, 1040px">
+          <img src="ai-talent-map.png" alt="AI 人才生态图谱：应用层、模型层、基础设施层、智能体层与基础能力层的人才分布，以及从云计算、AI Platform 到推理系统的人才迁移路径"
+               width="1306" height="1205" loading="lazy" decoding="async">
+        </picture>
+        <span class="map-hint">↗ 点击放大</span>
+      </button>
+      <div class="map-cap">
+        <span>图谱里的每条迁移路径，都是我会主动去问候选人的问题。</span>
+        <a href="ai-talent-map.png" download>下载原图 PNG</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 给候选人 ============ -->
+<section class="sec" id="talent">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="idx">03</span>
+      <h2>怎么合作</h2>
+      <span class="sec-en">How It Works</span>
+    </div>
+    <p class="sec-lead reveal">两边看的其实是同一件事：把一个技术方向上的真实价值，放到最合适的位置上。</p>
+
+    <div class="paths">
+      <div class="path reveal">
+        <p class="path-kicker">For Candidates</p>
+        <h3>如果你正在看机会</h3>
+        <p class="path-desc">我不会在你还没想清楚之前就把简历发出去。技术人到一定阶段，缺的不是机会，是判断机会的信息。</p>
+        <ul>
+          <li><strong>先说清你要什么</strong> — 方向、技术水位、团队阶段，以及愿意付出的代价：城市、期权、节奏。</li>
+          <li><strong>给你不写进 JD 的判断</strong> — 这个团队在什么水位、汇报线是谁、算力够不够、协作方式如何。</li>
+          <li><strong>不群发、不背调</strong> — 简历只在你点过头的团队之间流转；未经同意不做背景调查。</li>
+          <li><strong>全程信息对称</strong> — 面试进度、真实反馈、offer 结构，不美化也不隐瞒。</li>
+        </ul>
+        <div class="path-foot">
+          <a class="link-arrow" href="mailto:loggie1123@outlook.com?subject=%E7%9C%8B%E6%9C%BA%E4%BC%9A">发邮件聊聊 <span>→</span></a>
+        </div>
+      </div>
+
+      <div class="path client reveal" id="company">
+        <p class="path-kicker">For Hiring Teams</p>
+        <h3>如果你在招人</h3>
+        <p class="path-desc">这个领域的简历密度，和真实的能力密度差得很远。所以我按技术找人，不按关键词找人。</p>
+        <ul>
+          <li><strong>人才地图</strong> — 目标岗位在市场上的真实分布：哪些团队有量产经验，层级、动机与流动窗口在哪里。</li>
+          <li><strong>定向寻访</strong> — 读得懂系统论文、开源仓库和压测数据，能判断「做过 demo」和「跑过生产」。</li>
+          <li><strong>流程校准</strong> — 把 JD 翻译成候选人听得懂的话，减少面试空转和无效反馈。</li>
+          <li><strong>入职之后</strong> — 到岗后 3 个月内跟进磨合情况，而不是签完就结束。</li>
+        </ul>
+        <div class="path-foot">
+          <a class="link-arrow" href="mailto:loggie1123@outlook.com?subject=%E4%BA%BA%E6%89%8D%E5%9C%B0%E5%9B%BE%E6%A0%B7%E4%BE%8B">索取人才地图样例 <span>→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 在招方向 ============ -->
+<section class="sec" id="roles">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="idx">04</span>
+      <h2>当前在推进的方向</h2>
+      <span class="sec-en">Open Roles</span>
+    </div>
+    <p class="sec-lead reveal">以下方向长期有效，具体团队、层级与 JD 可邮件索取。</p>
+
+    <div class="roles reveal">
+      <article class="role">
+        <h3>多模态算法</h3>
+        <p>预训练 / 后训练 / 数据与评测</p>
+        <span class="tag-state">持续在招</span>
+      </article>
+      <article class="role">
+        <h3>大模型算法</h3>
+        <p>后训练（SFT · RLHF · RL）/ 对齐与安全</p>
+        <span class="tag-state">持续在招</span>
+      </article>
+      <article class="role">
+        <h3>AI Infra</h3>
+        <p>训练框架 / 推理引擎 / GPU 调度与算力池化</p>
+        <span class="tag-state">持续在招</span>
+      </article>
+      <article class="role">
+        <h3>RL Infra</h3>
+        <p>大规模 RL 训练系统 / 采样与奖励建模</p>
+        <span class="tag-state">持续在招</span>
+      </article>
+      <article class="role">
+        <h3>Agent Infra</h3>
+        <p>Runtime 与编排 / 工具与记忆 / 评测</p>
+        <span class="tag-state">持续在招</span>
+      </article>
+    </div>
+
+    <div class="roles-foot reveal">
+      <span>城市以北京、上海、杭州、深圳为主；客户名称不公开，收到你的方向后我会说明具体是哪类团队。</span>
+      <a class="link-arrow" href="mailto:loggie1123@outlook.com?subject=%E7%B4%A2%E5%8F%96JD">邮件索取 JD <span>→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 关于 ============ -->
+<section class="sec" id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="idx">05</span>
+      <h2>关于我</h2>
+      <span class="sec-en">About</span>
+    </div>
+
+    <div class="about">
+      <aside class="about-side reveal">
+        <!-- 有个人照片时，把下面这行换成 <img class="portrait" src="assets/portrait.jpg" alt="Loggie"> -->
+        <div class="portrait" aria-hidden="true">L</div>
+        <div>
+          <h3>Loggie</h3>
+          <p>技术招聘顾问 · 北京</p>
+        </div>
+      </aside>
+
+      <div class="reveal">
+        <div class="timeline">
+          <div class="tl-item">
+            <p class="tl-when">2019 — 2023</p>
+            <p class="tl-what">云计算与大数据方向技术招聘
+              <small>从虚拟化、容器到数据平台。这几年学会的不是背岗位词，而是怎么问出一个工程师到底做过什么。</small>
+            </p>
+          </div>
+          <div class="tl-item">
+            <p class="tl-when">2023 — 至今</p>
+            <p class="tl-what">专注大模型与 AI 基础设施
+              <small>从预训练、后训练到训推框架与 RL Infra，跟着这一代技术栈一起长，也把这些年见过的团队画成了上面那张图。</small>
+            </p>
+          </div>
+        </div>
+
+        <p class="quote">
+          我的工作不是把简历送到更多地方，而是理解一个人的技术价值，再把它放到能放大的位置上。
+        </p>
+
+        <div class="tags">
+          <span>预训练</span>
+          <span>后训练</span>
+          <span>多模态</span>
+          <span>AI Infra</span>
+          <span>RL Infra</span>
+          <span>Agent Infra</span>
+          <span>人才地图</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 联系 ============ -->
+<section class="sec" id="contact">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="idx">06</span>
+      <h2>联系方式</h2>
+      <span class="sec-en">Contact</span>
+    </div>
+    <p class="sec-lead reveal">哪个渠道都行，说清楚来意，我回得快一些。</p>
+
+    <div class="contact reveal">
+      <div class="cc">
+        <p class="cc-k">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.5" y="3" width="13" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="m2 4.5 6 4 6-4" stroke="currentColor" stroke-width="1.2"/></svg>
+          Email
+        </p>
+        <p class="cc-v"><a href="mailto:loggie1123@outlook.com">loggie1123@outlook.com</a></p>
+        <button class="copy" type="button" data-copy="loggie1123@outlook.com" aria-live="polite">复制</button>
+      </div>
+
+      <div class="cc">
+        <p class="cc-k">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.8c-3.4 0-6 2.3-6 5.2 0 1.7 1 3.2 2.5 4.1L4 14l2.4-1.2c.5.1 1 .2 1.6.2 3.4 0 6-2.3 6-5.2S11.4 1.8 8 1.8Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          WeChat
+        </p>
+        <p class="cc-v">Winnyontheroad</p>
+        <button class="copy" type="button" data-copy="Winnyontheroad" aria-live="polite">复制</button>
+      </div>
+
+      <div class="cc">
+        <p class="cc-k">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M5 7v4M5 4.8v.1M8 11V6.8M8 8.6c0-1 .7-1.8 1.7-1.8S11.4 7.6 11.4 8.6V11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          LinkedIn
+        </p>
+        <p class="cc-v"><a href="https://www.linkedin.com/in/loggie-ann-230b6521b/" target="_blank" rel="noopener">Loggie Ann</a></p>
+        <a class="copy" href="https://www.linkedin.com/in/loggie-ann-230b6521b/" target="_blank" rel="noopener">打开主页 ↗</a>
+      </div>
+    </div>
+
+    <p class="note reveal">
+      邮件一般 24 小时内回复。加微信请备注来意——比如「看机会 · 多模态后训练」或「招人 · AI Infra 负责人」，我好判断能不能帮上。
+      如果你只是想知道自己这个方向现在市场上值多少，也可以直接问，不用先发简历。
+    </p>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <span>© 2026 Loggie · AI Talent Research Studio</span>
+  <span>最后更新 2026-11-12</span>
+  <a class="to-top" href="#top">回到顶部 ↑</a>
+</footer>
+
+<dialog class="lb" id="lb" aria-label="AI 人才生态图谱大图">
+  <button class="lb-close" type="button" aria-label="关闭">×</button>
+  <img alt="AI 人才生态图谱大图" width="1306" height="1205">
+</dialog>
+
+<script src="assets/app.js" defer></script>
 </body>
 </html>

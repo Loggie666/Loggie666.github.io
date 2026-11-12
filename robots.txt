@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://loggie666.github.io/sitemap.xml
